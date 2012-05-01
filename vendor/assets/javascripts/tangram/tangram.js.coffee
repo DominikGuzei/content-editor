@@ -3,6 +3,7 @@ class @Tangram
 
   @editors: []
   @typeToBlockMap: {}
+  @blocks: {}
 
   @registerBlock: (block, selector) ->
     Tangram.typeToBlockMap[selector] = block

@@ -1,5 +1,5 @@
 
-class @Tangram.Editor
+class Tangram.Editor
 
   @CSS_CLASS: 'tangram-editor'
 
