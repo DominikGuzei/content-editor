@@ -13,10 +13,13 @@ Gem::Specification.new do |s|
   s.summary     = "TODO: Summary of Tangram."
   s.description = "TODO: Description of Tangram."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
-  s.test_files = Dir["test/**/*"]
+  s.files        = `git ls-files`.split("\n")
+  s.executables  = `git ls-files`.split("\n").select{|f| f =~ /^bin/}
+  s.require_path = 'lib'
 
   s.add_dependency "rails", "~> 3.2.3"
 
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "coffee-rails"
+  s.add_development_dependency "jasminerice"
 end
