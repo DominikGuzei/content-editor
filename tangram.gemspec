@@ -7,11 +7,11 @@ require "tangram/version"
 Gem::Specification.new do |s|
   s.name        = "tangram"
   s.version     = Tangram::VERSION
-  s.authors     = ["TODO: Your name"]
-  s.email       = ["TODO: Your email"]
+  s.authors     = ["Dominik Guzei"]
+  s.email       = ["dominik.guzei@gmail.com"]
   s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Tangram."
-  s.description = "TODO: Description of Tangram."
+  s.summary     = "A modular content editor written in CoffeeScript."
+  s.description = "A modular content editor for CMS-Systems as replacement for traditional (horrible) rich text editors."
 
   s.files        = `git ls-files`.split("\n")
   s.executables  = `git ls-files`.split("\n").select{|f| f =~ /^bin/}
