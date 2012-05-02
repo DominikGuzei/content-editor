@@ -41,26 +41,23 @@ describe 'Tangram.Editor', ->
     describe 'updating a textarea', ->
 
       beforeEach ->
-        @headlineBlockInstance = save: @spy()
+        @headlineBlockInstance = getMarkup: @stub().returns "headline"
         @headlineBlockStub.create.returns @headlineBlockInstance
 
-        @paragraphBlockInstance = save: @spy()
+        @paragraphBlockInstance = getMarkup: @stub().returns "paragraph"
         @paragraphBlockStub.create.returns @paragraphBlockInstance
 
         @editor = Tangram.Editor.create textarea: @textarea[0]
 
-      it 'should tell all blocks to go into save mode', ->
+      it 'should concatenate the markup of all blocks', ->
         @editor.updateElement()
 
-        (expect @headlineBlockInstance.save).toHaveBeenCalled()
-        (expect @paragraphBlockInstance.save).toHaveBeenCalled()
+        (expect @headlineBlockInstance.getMarkup).toHaveBeenCalled()
+        (expect @paragraphBlockInstance.getMarkup).toHaveBeenCalled()
 
-      it 'should copy the preview markup into the textarea', ->
-        editorElement = @editor.rootElement
-
-        changedContent = "<h2>Changed title</h2>"
-        editorElement.html changedContent
-
+      it 'should concatenate the markup of all blocks and copy it into the textarea', ->
         @editor.updateElement()
 
-        (expect @textarea.val()).toEqual changedContent
+        (expect @headlineBlockInstance.getMarkup).toHaveBeenCalled()
+        (expect @paragraphBlockInstance.getMarkup).toHaveBeenCalled()
+        (expect @textarea.val()).toEqual "headlineparagraph"
