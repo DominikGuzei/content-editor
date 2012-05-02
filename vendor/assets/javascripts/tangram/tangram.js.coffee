@@ -16,8 +16,8 @@ class @Tangram
 
     return foundBlock
 
-  @replace: (element) ->
-    editor = new Tangram.Editor element
+  @replace: (textarea) ->
+    editor = Tangram.Editor.create textarea: textarea
     Tangram.editors.push editor
 
     return editor

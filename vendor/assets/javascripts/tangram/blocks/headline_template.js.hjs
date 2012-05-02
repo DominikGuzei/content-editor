@@ -1,0 +1,7 @@
+
+{{#if isEditing}}
+  {{view sizeSelect contentBinding="sizes" selectionBinding="currentSize"}}
+  {{view headlineTextField valueBinding="text" classBinding="parentView.currentSize"}}
+{{else}}
+  <div {{bindAttr class="currentSize"}} {{action "edit"}}>{{text}}</div>
+{{/if}}

@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
 
   s.add_dependency "rails", "~> 3.2.3"
+  s.add_runtime_dependency "embient"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "coffee-rails"

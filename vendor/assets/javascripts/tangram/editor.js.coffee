@@ -1,32 +1,31 @@
 
-class Tangram.Editor
-
-  @CSS_CLASS: 'tangram-editor'
+Tangram.Editor = Ember.Application.extend
 
   textarea: null
   rootElement: null
   blocks: null
 
-  constructor: (textarea) ->
-    @blocks = []
-    @textarea = $(textarea).hide()
+  init: ->
+    @_setupRootElement()
+    @_super()
 
-    @_createRootElement()
+  ready: ->
+    @blocks = []
+
     @_initializeBlocks()
 
-    @textarea.after @rootElement
-
   updateElement: ->
-    block.preview() for block in @blocks
+    block.save() for block in @blocks
     @textarea.val @rootElement.html()
 
-  _createRootElement: ->
-    contents = @textarea.text()
+  _setupRootElement: ->
     @rootElement = jQuery '<div class="tangram-editor">'
-    @rootElement.append contents
+    @textarea = $(@textarea).hide()
+    @textarea.after @rootElement
+    @rootElement.html @textarea.val()
 
   _initializeBlocks: ->
     @rootElement.children().each (index, childElement) =>
       childElement = $(childElement)
       BlockType = Tangram.getBlockForElement childElement
-      @blocks.push (new BlockType childElement) if BlockType?
+      @blocks.push (BlockType.create blockElement: childElement) if BlockType?

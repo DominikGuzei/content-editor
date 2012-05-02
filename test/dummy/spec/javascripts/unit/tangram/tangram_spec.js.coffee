@@ -16,32 +16,32 @@ describe "Tangram", ->
       (expect Tangram.getBlockForElement jQuery '<p class="test">').toBe paragraphBlockFake
 
 
-  describe 'replacing elements with editor instances', ->
+  describe 'replacing textarea with editor instances', ->
 
     beforeEach ->
-      @elementFake = {}
-      @stub Tangram, 'Editor'
+      @textareaFake = {}
+      @stub Tangram.Editor, 'create'
 
     it 'should create editor instance and provide element as parameter', ->
-      Tangram.replace @elementFake
+      Tangram.replace @textareaFake
 
-      (expect Tangram.Editor.calledWithNew()).toBe true
-      (expect Tangram.Editor).toHaveBeenCalledWith @elementFake
+      (expect Tangram.Editor.create).toHaveBeenCalled()
+      (expect Tangram.Editor.create.args[0][0]).toEqual { textarea: @textareaFake }
 
-    it 'should return an editor instance' , ->
-      fakeEditorInstance = {}
-      Tangram.Editor.returns fakeEditorInstance
+    it 'should return editor instance', ->
+      editorFakeInstance = {}
+      Tangram.Editor.create.returns editorFakeInstance
 
-      replaceReturnValue = Tangram.replace @elementFake
+      editor = Tangram.replace @textareaFake
 
-      (expect replaceReturnValue).toBe fakeEditorInstance
+      (expect editor).toBe editorFakeInstance
 
 
   describe 'updating replaced form elements', ->
 
     beforeEach ->
       @editorInstanceFake = updateElement: @spy()
-      (@stub Tangram, 'Editor').returns @editorInstanceFake
+      (@stub Tangram.Editor, 'create').returns @editorInstanceFake
 
       # create two fake editor instances
       Tangram.replace {}

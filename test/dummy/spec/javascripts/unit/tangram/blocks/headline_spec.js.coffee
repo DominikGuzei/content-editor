@@ -1,4 +1,5 @@
 
+
 describe 'Tangram.blocks.Headline', ->
 
   Headline = Tangram.blocks.Headline
@@ -17,34 +18,25 @@ describe 'Tangram.blocks.Headline', ->
     @headlineText = 'some headline'
     @headline = (jQuery "<h1>#{@headlineText}</h1>").appendTo @wrapper
 
-    @headlineBlock = new Headline @headline
 
+  it 'should swap the headline with the ember view', ->
+    @headlineBlock = Headline.create blockElement: @headline
 
-  describe 'edit mode', ->
+    Ember.run.end()
 
-    it 'should swap the headline with a textfield when editing starts', ->
-      @headlineBlock.onEdit()
+    (expect @wrapper).not.toContain @headline
+    (expect @wrapper).toContain @headlineBlock.get 'element'
 
-      (expect @headlineBlock.input).toHaveValue @headlineText
+  it 'should set currentSize from replaced headline', ->
+    @headlineBlock = Headline.create blockElement: @headline
 
-    it 'should update the input every time with the headline text', ->
-      currentText = "first value"
-      @headlineBlock.element.text currentText
+    Ember.run.end()
 
-      @headlineBlock.onEdit()
+    (expect @headlineBlock.get 'currentSize').toBe 'h1'
 
-      (expect @headlineBlock.input).toHaveValue currentText
+  it 'should take text from the replace headline', ->
+    @headlineBlock = Headline.create blockElement: @headline
 
-  describe 'preview mode', ->
+    Ember.run.end()
 
-    it 'should swap the edit textfield back to the headline', ->
-      @headlineBlock.onEdit()
-
-      changedText = 'changed text'
-      @headlineBlock.input.val changedText
-
-      @headlineBlock.onPreview()
-
-      (expect @wrapper).not.toContain 'input[type=text]'
-      (expect @wrapper).toContain @headline
-      (expect @headline).toHaveText changedText
+    (expect @headlineBlock.get 'text').toBe @headline.text()

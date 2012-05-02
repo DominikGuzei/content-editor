@@ -5,6 +5,7 @@ require 'rails/all'
 Bundler.require
 require "tangram"
 require "jasminerice"
+require "embient"
 
 module Dummy
   class Application < Rails::Application

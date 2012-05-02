@@ -9,8 +9,8 @@ describe 'Tangram.Editor', ->
     @textarea.appendTo @wrapper
 
     # register fake blocks for selectors
-    @headlineBlockStub = @stub()
-    @paragraphBlockStub = @stub()
+    @headlineBlockStub = create: @stub()
+    @paragraphBlockStub = create: @stub()
 
     Tangram.registerBlock @headlineBlockStub, 'h1'
     Tangram.registerBlock @paragraphBlockStub, 'p.test'
@@ -21,19 +21,19 @@ describe 'Tangram.Editor', ->
     describe 'replacing a textarea', ->
 
       it 'should hide the textarea and append an editor instance directly after it', ->
-        new Tangram.Editor @textarea[0]
+        editor = Tangram.Editor.create textarea: @textarea[0]
 
         (expect @wrapper).toContain @textarea
         (expect @textarea).toBeHidden()
-        (expect @wrapper).toContain "div.#{Tangram.Editor.CSS_CLASS}"
+        (expect @wrapper).toContain editor.rootElement
 
       it 'should create blocks for all child elements', ->
-        new Tangram.Editor @textarea[0]
+        editor = Tangram.Editor.create textarea: @textarea[0]
 
-        (expect @headlineBlockStub).toHaveBeenCalledWithNew()
-        (expect @headlineBlockStub.args[0][0]).toBe 'h1'
-        (expect @paragraphBlockStub).toHaveBeenCalledWithNew()
-        (expect @paragraphBlockStub.args[0][0]).toBe 'p.test'
+        editor.ready()
+
+        (expect @headlineBlockStub.create).toHaveBeenCalled()
+        (expect @paragraphBlockStub.create).toHaveBeenCalled()
 
 
   describe 'updating underlying form element', ->
@@ -41,19 +41,19 @@ describe 'Tangram.Editor', ->
     describe 'updating a textarea', ->
 
       beforeEach ->
-        @headlineBlockInstance = preview: @spy()
-        @headlineBlockStub.returns @headlineBlockInstance
+        @headlineBlockInstance = save: @spy()
+        @headlineBlockStub.create.returns @headlineBlockInstance
 
-        @paragraphBlockInstance = preview: @spy()
-        @paragraphBlockStub.returns @paragraphBlockInstance
+        @paragraphBlockInstance = save: @spy()
+        @paragraphBlockStub.create.returns @paragraphBlockInstance
 
-        @editor = new Tangram.Editor @textarea[0]
+        @editor = Tangram.Editor.create textarea: @textarea[0]
 
-      it 'should tell all blocks to go into preview mode', ->
+      it 'should tell all blocks to go into save mode', ->
         @editor.updateElement()
 
-        (expect @headlineBlockInstance.preview).toHaveBeenCalled()
-        (expect @paragraphBlockInstance.preview).toHaveBeenCalled()
+        (expect @headlineBlockInstance.save).toHaveBeenCalled()
+        (expect @paragraphBlockInstance.save).toHaveBeenCalled()
 
       it 'should copy the preview markup into the textarea', ->
         editorElement = @editor.rootElement
