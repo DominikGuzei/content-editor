@@ -16,8 +16,9 @@ Tangram.Editor = Ember.Application.extend
     @_initializeSortable()
 
   updateElement: ->
-    block.save() for block in @blocks
-    @textarea.val @rootElement.html()
+    updatedMarkup = ""
+    updatedMarkup += block.getMarkup() for block in @blocks
+    @textarea.val updatedMarkup
 
   _setupRootElement: ->
     @rootElement = jQuery '<div class="tangram-editor">'
