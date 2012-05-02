@@ -34,9 +34,31 @@ describe 'Tangram.blocks.Headline', ->
 
     (expect @headlineBlock.get 'currentSize').toBe 'h1'
 
-  it 'should take text from the replace headline', ->
+  it 'should take text from the replaced headline', ->
     @headlineBlock = Headline.create blockElement: @headline
 
     Ember.run.end()
 
     (expect @headlineBlock.get 'text').toBe @headline.text()
+
+
+  describe 'saving the changes back as headline element', ->
+
+    beforeEach ->
+      @headlineBlock = Headline.create blockElement: @headline
+
+
+    it 'should replace the ember view with an correct headline element', ->
+      headlineText = "test"
+      headlineSize = 'h6'
+
+      @headlineBlock.set 'text', headlineText
+      @headlineBlock.set 'currentSize', headlineSize
+
+      @headlineBlock.save()
+
+      Ember.run.end()
+
+      (expect @wrapper).not.toContain @headlineBlock.get 'element'
+      (expect @wrapper).toContain headlineSize
+      (expect @wrapper.find headlineSize).toHaveText headlineText

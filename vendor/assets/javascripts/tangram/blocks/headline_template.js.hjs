@@ -1,7 +1,11 @@
 
 {{#if isEditing}}
-  {{view sizeSelect contentBinding="sizes" selectionBinding="currentSize"}}
-  {{view headlineTextField valueBinding="text" classBinding="parentView.currentSize"}}
+  <label class="change-size">Size:</label>
+  {{view headlineEditSizeSelect contentBinding="sizes" selectionBinding="currentSize"}}
+  {{#view switchFromEditToPreviewButton}}preview{{/view}}
+  {{view headlineEditTextField valueBinding="text" classBinding="parentView.currentSize"}}
 {{else}}
-  <div {{bindAttr class="currentSize"}} {{action "edit"}}>{{text}}</div>
+  <div {{bindAttr class="currentSize isTangramHeadline"}} {{action "edit"}}>
+    {{text}}
+  </div>
 {{/if}}

@@ -1,0 +1,46 @@
+
+.headline-block {
+
+  > .ember-view {
+    padding: 5px;
+    &.is-editing {
+      border: 1px solid #CCC;
+      background: #DEDEDE;
+    }
+  }
+
+  label {
+    display: inline;
+  }
+
+  .is-tangram-headline {
+
+    font-weight: bold;
+    width: 95%;
+
+    &.h1 {
+      font-size: 2em;
+    }
+
+    &.h2 {
+      font-size: 1.7em;
+    }
+
+    &.h3 {
+      font-size: 1.5em;
+    }
+
+    &.h4 {
+      font-size: 1.3em;
+    }
+
+    &.h5 {
+      font-size: 1.2em;
+    }
+
+    &.h6 {
+      font-size: 1.1em;
+    }
+
+  }
+}
