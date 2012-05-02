@@ -45,8 +45,9 @@ Tangram.blocks.Headline = Ember.View.extend
 
     @appendTo @blockReplacement
 
-  edit: ->
-    @set 'isEditing', true
+  didInsertElement: -> @_updatePreviewHeadline()
+
+  edit: -> @set 'isEditing', true
 
   preview: -> @set 'isEditing', false
 
@@ -54,7 +55,18 @@ Tangram.blocks.Headline = Ember.View.extend
     @blockReplacement.after @_createHeadlineFromCurrentState()
     @_removeHeadlineBlockFrom()
 
-  _createHeadlineFromCurrentState: -> jQuery "<#{@currentSize}>#{@text}</#{@currentSize}>"
+  currentSizeChanged: (->
+    @_updatePreviewHeadline()
+  ).observes 'currentSize'
+
+  _updatePreviewHeadline: ->
+    this.$('div.is-tangram-headline').html @_createHeadlineFromCurrentState()
+
+  _createHeadlineFromCurrentState: ->
+    currentSize = @get 'currentSize'
+    text = @get 'text'
+
+    jQuery "<#{currentSize}>#{text}</#{currentSize}>"
 
   _removeHeadlineBlockFrom: ->
     @remove()
