@@ -1,0 +1,11 @@
+
+.tangram-editor {
+
+  .block {
+    cursor: move;
+
+    &:hover {
+      background: #efefef;
+    }
+  }
+}

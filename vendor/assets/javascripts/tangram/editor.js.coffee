@@ -13,6 +13,7 @@ Tangram.Editor = Ember.Application.extend
     @blocks = []
 
     @_initializeBlocks()
+    @_initializeSortable()
 
   updateElement: ->
     block.save() for block in @blocks
@@ -29,3 +30,7 @@ Tangram.Editor = Ember.Application.extend
       childElement = $(childElement)
       BlockType = Tangram.getBlockForElement childElement
       @blocks.push (BlockType.create blockElement: childElement) if BlockType?
+
+  _initializeSortable: ->
+    @rootElement.sortable
+      items: '.block'

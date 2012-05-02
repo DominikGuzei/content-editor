@@ -40,7 +40,7 @@ Tangram.blocks.Headline = Ember.View.extend
     @set 'text', @blockElement.text()
     @set 'sizes', [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 
-    @blockReplacement = jQuery '<div class="headline-block">'
+    @blockReplacement = jQuery '<div class="headline-block block">'
     @blockElement.replaceWith @blockReplacement
 
     @appendTo @blockReplacement
