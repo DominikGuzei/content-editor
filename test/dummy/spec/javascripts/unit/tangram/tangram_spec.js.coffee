@@ -3,17 +3,8 @@ describe "Tangram", ->
 
   afterEach -> Tangram.editors.length = 0 # clear any created test editors
 
-  describe 'registration of block plugins', ->
-
-    it 'should provide a namespace for blocks', ->
-      (expect Tangram.blocks).toBeDefined()
-
-    it 'should allow mapping of blocks to element selectors', ->
-      paragraphBlockFake = {}
-
-      Tangram.registerBlock paragraphBlockFake, 'p.test'
-
-      (expect Tangram.getBlockForElement jQuery '<p class="test">').toBe paragraphBlockFake
+  it 'should provide a namespace for blocks', ->
+    (expect Tangram.blocks).toBeDefined()
 
 
   describe 'replacing textarea with editor instances', ->

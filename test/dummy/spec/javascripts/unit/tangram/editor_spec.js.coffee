@@ -8,12 +8,11 @@ describe 'Tangram.Editor', ->
     @textarea = jQuery '<textarea><h1>headline</h1><p class="test">text</p></textarea>'
     @textarea.appendTo @wrapper
 
-    # register fake blocks for selectors
-    @headlineBlockStub = create: @stub()
-    @paragraphBlockStub = create: @stub()
+    @containerInstanceMock = appendTo: @spy()
+    (@stub Tangram.blocks.Container, 'create').returns @containerInstanceMock
 
-    Tangram.registerBlock @headlineBlockStub, 'h1'
-    Tangram.registerBlock @paragraphBlockStub, 'p.test'
+    @toolbarInstance = appendTo: @spy()
+    (@stub Tangram.ToolBar, 'create').returns @toolbarInstance
 
 
   describe 'initialising an editor instance', ->
@@ -27,37 +26,52 @@ describe 'Tangram.Editor', ->
         (expect @textarea).toBeHidden()
         (expect @wrapper).toContain editor.rootElement
 
-      it 'should create blocks for all child elements', ->
+      it 'should create a block container with markup and append it', ->
         editor = Tangram.Editor.create textarea: @textarea[0]
 
         editor.ready()
 
-        (expect @headlineBlockStub.create).toHaveBeenCalled()
-        (expect @paragraphBlockStub.create).toHaveBeenCalled()
+        (expect Tangram.blocks.Container.create.args[0][0].markup).toEqual @textarea.val()
+        (expect @containerInstanceMock.appendTo).toHaveBeenCalledWith editor.rootElement
 
+    describe 'creating the toolbar', ->
+
+      it 'should create the toolbar and append it to the root element', ->
+        editor = Tangram.Editor.create textarea: @textarea[0]
+
+        editor.ready()
+
+        (expect Tangram.ToolBar.create).toHaveBeenCalled()
+        (expect Tangram.ToolBar.create.args[0][0].editor).toBe editor
+        (expect @toolbarInstance.appendTo).toHaveBeenCalledWith editor.rootElement
 
   describe 'updating underlying form element', ->
 
     describe 'updating a textarea', ->
 
       beforeEach ->
-        @headlineBlockInstance = getMarkup: @stub().returns "headline"
-        @headlineBlockStub.create.returns @headlineBlockInstance
-
-        @paragraphBlockInstance = getMarkup: @stub().returns "paragraph"
-        @paragraphBlockStub.create.returns @paragraphBlockInstance
-
+        @testMarkup = "headline"
+        @containerInstanceMock.getMarkup = @stub().returns @testMarkup
         @editor = Tangram.Editor.create textarea: @textarea[0]
 
-      it 'should concatenate the markup of all blocks', ->
+      it 'should get the container markup and copy it into the textarea', ->
         @editor.updateElement()
 
-        (expect @headlineBlockInstance.getMarkup).toHaveBeenCalled()
-        (expect @paragraphBlockInstance.getMarkup).toHaveBeenCalled()
+        (expect @containerInstanceMock.getMarkup).toHaveBeenCalled()
+        (expect @textarea.val()).toEqual @testMarkup
 
-      it 'should concatenate the markup of all blocks and copy it into the textarea', ->
-        @editor.updateElement()
 
-        (expect @headlineBlockInstance.getMarkup).toHaveBeenCalled()
-        (expect @paragraphBlockInstance.getMarkup).toHaveBeenCalled()
-        (expect @textarea.val()).toEqual "headlineparagraph"
+  describe 'registration of block plugins', ->
+
+    it 'should take block to selector map on creation', ->
+      paragraphBlockFake = {}
+      headlineBlockFake = {}
+
+      map =
+        'p.test': paragraphBlockFake
+        'h1': headlineBlockFake
+
+      @editor = Tangram.Editor.create selectorToBlockMap: map
+
+      (expect @editor.getBlockForElement jQuery '<p class="test">').toBe paragraphBlockFake
+      (expect @editor.getBlockForElement jQuery '<h1>').toBe headlineBlockFake

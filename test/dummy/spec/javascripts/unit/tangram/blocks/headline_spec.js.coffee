@@ -4,14 +4,6 @@ describe 'Tangram.blocks.Headline', ->
 
   Headline = Tangram.blocks.Headline
 
-  it 'registers itself for all headline tags', ->
-    (expect Tangram.getBlockForElement jQuery '<h1>').toBe Headline
-    (expect Tangram.getBlockForElement jQuery '<h2>').toBe Headline
-    (expect Tangram.getBlockForElement jQuery '<h3>').toBe Headline
-    (expect Tangram.getBlockForElement jQuery '<h4>').toBe Headline
-    (expect Tangram.getBlockForElement jQuery '<h5>').toBe Headline
-    (expect Tangram.getBlockForElement jQuery '<h6>').toBe Headline
-
 
   beforeEach ->
     @wrapper = jQuery '<div>'

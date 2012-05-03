@@ -1,12 +1,10 @@
 
 .headline-block {
 
-  > .ember-view {
-    padding: 5px;
-    &.is-editing {
-      border: 1px solid #CCC;
-      background: #DEDEDE;
-    }
+  padding: 5px;
+  &.is-editing {
+    border: 1px solid #CCC;
+    background: #DEDEDE;
   }
 
   label {

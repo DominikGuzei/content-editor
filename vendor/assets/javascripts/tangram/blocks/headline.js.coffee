@@ -4,6 +4,7 @@ Tangram.blocks.Headline = Ember.View.extend
   isTangramHeadline: true
 
   templateName: 'tangram_blocks_headline_template'
+  classNames: ['headline-block block']
   classNameBindings: ['isEditing']
 
   isEditing: false
@@ -40,10 +41,7 @@ Tangram.blocks.Headline = Ember.View.extend
     @set 'text', @blockElement.text()
     @set 'sizes', [ 'h1', 'h2', 'h3', 'h4', 'h5', 'h6']
 
-    @blockReplacement = jQuery '<div class="headline-block block">'
-    @blockElement.replaceWith @blockReplacement
-
-    @appendTo @blockReplacement
+    @_insertElementLater -> @blockElement.replaceWith this.$()
 
   didInsertElement: -> @preview()
 
@@ -65,4 +63,6 @@ Tangram.blocks.Headline = Ember.View.extend
     jQuery "<#{currentSize}>#{text}</#{currentSize}>"
 
 
-Tangram.registerBlock Tangram.blocks.Headline, 'h1, h2, h3, h4, h5, h6'
+Tangram.blocks.Headline.reopenClass
+
+  getToolMarkup: -> '<div class="tool headline" data-selector="h1">Headline</h1>'
