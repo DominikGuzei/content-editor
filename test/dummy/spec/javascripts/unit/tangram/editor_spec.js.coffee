@@ -32,6 +32,7 @@ describe 'Tangram.Editor', ->
         editor.ready()
 
         (expect Tangram.blocks.Container.create.args[0][0].markup).toEqual @textarea.val()
+        (expect Tangram.blocks.Container.create.args[0][0].editor).toEqual editor
         (expect @containerInstanceMock.appendTo).toHaveBeenCalledWith editor.rootElement
 
     describe 'creating the toolbar', ->

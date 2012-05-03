@@ -4,10 +4,11 @@ class @Tangram
   @editors: []
   @blocks: {}
 
-  @replace: (textarea) ->
-    editor = Tangram.Editor.create textarea: textarea
-    Tangram.editors.push editor
+  @replace: (textarea, configuration={}) ->
+    configuration.textarea = textarea
+    editor = Tangram.Editor.create configuration
 
+    Tangram.editors.push editor
     return editor
 
   @updateAllEditorElements: ->

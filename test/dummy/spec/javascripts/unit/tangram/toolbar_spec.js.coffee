@@ -3,7 +3,7 @@ describe 'Tangram.ToolBar', ->
 
   beforeEach ->
     @wrapper = jQuery '<div>'
-    @editorFake = getTypeToBlockMap: @stub()
+    @editorFake = {}
     @toolBar = Tangram.ToolBar.create editor: @editorFake
 
 
@@ -14,17 +14,10 @@ describe 'Tangram.ToolBar', ->
       @headlineBlock = getToolMarkup: -> '<div id="headline-tool">'
       @paragraphBlock = getToolMarkup: -> '<div id="paragraph-tool">'
 
-      @editorFake.getTypeToBlockMap.returns
+      @editorFake.selectorToBlockMap =
         h1: @headlineBlock
         p: @paragraphBlock
 
-
-    it 'should get all registered blocks from Tangram', ->
-      @toolBar.appendTo @wrapper
-
-      Ember.run.end()
-
-      (expect @editorFake.getTypeToBlockMap).toHaveBeenCalled()
 
     it 'should concatenate the tool markup of all blocks and insert it', ->
       @toolBar.appendTo @wrapper

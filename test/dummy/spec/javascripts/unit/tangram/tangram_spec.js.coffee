@@ -13,11 +13,19 @@ describe "Tangram", ->
       @textareaFake = {}
       @stub Tangram.Editor, 'create'
 
-    it 'should create editor instance and provide element as parameter', ->
+    it 'should create editor instance and provide textarea as parameter', ->
       Tangram.replace @textareaFake
 
       (expect Tangram.Editor.create).toHaveBeenCalled()
       (expect Tangram.Editor.create.args[0][0]).toEqual { textarea: @textareaFake }
+
+    it 'should pass configuration param', ->
+      selectorToBlockMapFake = {}
+      Tangram.replace @textareaFake, selectorToBlockMap: selectorToBlockMapFake
+
+      (expect Tangram.Editor.create.args[0][0]).toEqual
+        textarea: @textareaFake
+        selectorToBlockMap: selectorToBlockMapFake
 
     it 'should return editor instance', ->
       editorFakeInstance = {}

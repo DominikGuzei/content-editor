@@ -8,7 +8,7 @@ Tangram.ToolBar = Ember.View.extend
   blockTypes: null
 
   didInsertElement: ->
-    @blockTypes = @editor.getTypeToBlockMap()
+    @blockTypes = @editor.selectorToBlockMap
 
     toolsMarkup = ''
 

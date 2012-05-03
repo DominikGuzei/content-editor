@@ -32,6 +32,7 @@ Tangram.Editor = Ember.Application.extend
 
   _setupBlockContainer: ->
     @blockContainer = Tangram.blocks.Container.create
+      editor: this
       markup: @textarea.val()
 
     @blockContainer.appendTo @rootElement
