@@ -6,7 +6,10 @@ Tangram.blocks.Container = Ember.View.extend
   classNames: [CONTAINER_CLASS]
 
   editor: null
+  blocks: null
   markup: ''
+
+  _blockIndexBeforeSort: null
 
   init: ->
     @_super()
@@ -19,28 +22,39 @@ Tangram.blocks.Container = Ember.View.extend
 
   getMarkup: ->
     markup = ''
-
-    this.$().children().each (index, childElement) =>
-      block = $(this).data 'tangram-block'
-      markup += block.getMarkup() for block in @blocks
+    markup += block.getMarkup() for block in @blocks
 
     return markup
 
   _setupBlocks: ->
     this.$().children().each (index, childElement) =>
       childElement = $(childElement)
-      @_createBlockFromElement childElement
+      @_createBlockFromElementAtIndex childElement, index
 
   _makeBlocksSortable: ->
     this.$().sortable
-      stop: => @_handleSortStop.apply this, arguments
+      start: => @_handleBlockSortStart.apply this, arguments
+      stop: => @_handleBlockSortStop.apply this, arguments
 
-  _handleSortStop: (event, ui) ->
-    @_createBlockFromElement ui.item if ui.item.hasClass 'tool'
+  _handleBlockSortStart: (event, ui) -> @_blockIndexBeforeSort = ui.item.index()
 
-  _createBlockFromElement: (element) ->
+  _handleBlockSortStop: (event, ui) ->
+    sortedBlock = ui.item
+    blockIndexAfterSort = sortedBlock.index()
+
+    (@_createBlockFromElementAtIndex sortedBlock, blockIndexAfterSort) if sortedBlock.hasClass 'tool'
+    (@_moveBlockToIndex @_blockIndexBeforeSort, blockIndexAfterSort) if @_blockIndexBeforeSort?
+
+    @_blockIndexBeforeSort = null
+
+  _moveBlockToIndex: (oldIndex, newIndex) ->
+    @blocks.splice newIndex, 0, @blocks.splice(oldIndex, 1)[0]
+
+  _createBlockFromElementAtIndex: (element, index) ->
     BlockType = @editor.getBlockForElement element
-    BlockType.create blockElement: element if BlockType?
+
+    createdBlock = BlockType.create blockElement: element
+    @blocks.splice index, 0, createdBlock
 
 
 Tangram.blocks.Container.reopenClass CONTAINER_CLASS: CONTAINER_CLASS
