@@ -43,7 +43,9 @@ Tangram.blocks.Headline = Ember.View.extend
 
     @_insertElementLater -> @blockElement.replaceWith this.$()
 
-  didInsertElement: -> @preview()
+  didInsertElement: ->
+    this.$().data 'tangram-block', this
+    @preview()
 
   edit: -> @set 'isEditing', true
 
@@ -65,4 +67,4 @@ Tangram.blocks.Headline = Ember.View.extend
 
 Tangram.blocks.Headline.reopenClass
 
-  getToolMarkup: -> '<div class="tool headline" data-selector="h1">Headline</h1>'
+  getToolMarkup: -> '<h1 class="tool headline">Headline</h1>'
