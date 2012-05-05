@@ -3,7 +3,7 @@ Tangram.blocks.Headline = Ember.View.extend
 
   isTangramHeadline: true
 
-  templateName: 'tangram_blocks_headline_template'
+  templateName: 'tangram_blocks_headline_headline_template'
   classNames: ['headline-block block']
   classNameBindings: ['isEditing']
 
