@@ -8,6 +8,10 @@ Tangram.ToolBar = Ember.View.extend
   blockTypes: null
 
   didInsertElement: ->
+    @_setupTools()
+    @_makeToolsDraggable()
+
+  _setupTools: ->
     @blockTypes = @editor.selectorToBlockMap
 
     toolsMarkup = ''
@@ -16,3 +20,9 @@ Tangram.ToolBar = Ember.View.extend
       toolsMarkup += block.getToolMarkup()
 
     this.$('.tools').html toolsMarkup
+
+  _makeToolsDraggable: ->
+    this.$('.tool').draggable
+      connectToSortable: '.' + Tangram.blocks.Container.CONTAINER_CLASS
+      helper: "clone"
+      revert: "invalid"
