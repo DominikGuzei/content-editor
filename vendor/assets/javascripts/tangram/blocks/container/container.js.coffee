@@ -36,7 +36,9 @@ Tangram.blocks.Container = Ember.View.extend
       start: => @_handleBlockSortStart.apply this, arguments
       stop: => @_handleBlockSortStop.apply this, arguments
 
-  _handleBlockSortStart: (event, ui) -> @_blockIndexBeforeSort = ui.item.index()
+  _handleBlockSortStart: (event, ui) ->
+    blockToSort = ui.item
+    @_blockIndexBeforeSort = blockToSort.index() unless blockToSort.hasClass 'tool'
 
   _handleBlockSortStop: (event, ui) ->
     sortedBlock = ui.item
